@@ -119,3 +119,46 @@ python3 main.py "Make me a coffee"
 ---
 
 ## Expected Output (Valid Mission)
+
+Prompt received: 'Patrol a 30 metre square loop twice at 10 metres altitude'
+[1/3] Sending to LLM (Groq)...
+--- LLM RAW OUTPUT ---
+{"mission_type": "loop_patrol", "waypoints": [...], "altitude_m": 10, "loops": 2, ...}
+[2/3] Validating mission...
+✅ MISSION VALIDATED
+[3/3] Executing mission...
+Connected.
+Home position: -35.363262, 149.165237
+GPS fix acquired (type 6)
+Arming motors...
+Taking off to 10m...
+Reached target altitude 10.0m
+--- Loop 1 of 2 ---
+Flying to waypoint 1
+Waypoint 1 reached.
+...
+Returning to home...
+Landed.
+Disarming motors.
+Mission complete.
+
+## Expected Output (Rejected Mission)
+Prompt received: 'Patrol a square at 80 metres altitude'
+[1/3] Sending to LLM (Groq)...
+[2/3] Validating mission...
+❌ MISSION REJECTED: altitude 80m exceeds ceiling 50m
+No commands were sent to the drone.
+
+---
+
+## File Structure
+omokai-drone/
+├── Dockerfile
+├── requirements.txt
+├── schema.json        # mission schema + safety bounds
+├── llm_planner.py     # prompt → LLM → raw JSON
+├── validator.py       # raw JSON → validated JSON (or reject)
+├── executor.py        # validated JSON → MAVLink → ArduPilot
+├── main.py            # pipeline orchestrator
+├── README.md
+└── CITATIONS.md
