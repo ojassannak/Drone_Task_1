@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": ["mission_type", "waypoints", "speed_m_s", "loops", "altitude_m", "return_to_home"],
+  "properties": {
+    "mission_type": {"enum": ["loop_patrol", "point_to_point"]},
+    "waypoints": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["lat_offset_m", "lon_offset_m"],
+        "properties": {
+          "lat_offset_m": {"type": "number"},
+          "lon_offset_m": {"type": "number"}
+        }
+      }
+    },
+    "speed_m_s":      {"type": "number",  "minimum": 0.5, "maximum": 15},
+    "loops":          {"type": "integer", "minimum": 1,   "maximum": 10},
+    "altitude_m":     {"type": "number",  "minimum": 2,   "maximum": 50},
+    "return_to_home": {"type": "boolean"}
+  }
+}
